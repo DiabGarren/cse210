@@ -6,13 +6,15 @@
 player1 = []
 player2 = []
 
+
 def main():
     while True:
         try:
             # Get the grid size from the user
-            grid_size = int(input("Enter an odd number for the size of the grid you would like to play (e.g. 3 = 3x3, 5 = 5x5): "))
+            grid_size = int(input(
+                "Enter an odd number for the size of the grid you would like to play (e.g. 3 = 3x3, 5 = 5x5): "))
             # Check that the grid size is an odd number
-            if grid_size%2 != 0 and grid_size >= 3:
+            if grid_size % 2 != 0 and grid_size >= 3:
                 break
             else:
                 print(f"Please enter an odd number.")
@@ -20,6 +22,11 @@ def main():
         except (ValueError):
             print(f"Please enter an odd number.")
             continue
+
+    # Calculate the max number of rounds based on the grid size
+    max_rounds = grid_size**2
+    # Initialize the number of rounds played
+    rounds_played = 1
 
     # Initialize a string with the current grid
     play_grid, win_condition = draw_grid(grid_size)
@@ -33,17 +40,17 @@ def main():
     while True:
         try:
             # Get the block number to change
-            block = int(input(f"Player {player}: enter the number of the block you want to play in: "))
+            block = int(
+                input(f"Player {player}: enter the number of the block you want to play in: "))
         # If any other than a number is entered
         except (ValueError):
             print(f"Please enter a valid block number.")
             continue
-        
+
         # Capture the output of the current turn
         current_play = turn(player, play_grid, block)
 
-        # If there was an issue with the current turn
-        # play would be False
+        # If there was an issue with the current turn play would be False
         if current_play == "played":
             # Display that the block is taken
             print("That block as already been played.")
@@ -59,16 +66,26 @@ def main():
             # Check if there is no winner
             # Continue the game
             if game_over == False:
-                # If it was player 1's turn
-                if player == 1:
-                    # Make it player 2's turn
-                    player = 2
+                # If the number of rounds played is less than the max number of rounds
+                if rounds_played < max_rounds:
+                    # If it was player 1's turn
+                    if player == 1:
+                        # Make it player 2's turn
+                        player = 2
+                    else:
+                        # Else make it player 1's turn'
+                        player = 1
+
+                    # Increase the rounds played
+                    rounds_played += 1
                 else:
-                    # Else make it player 1's turn'
-                    player = 1
+                    print("Its a tie!")
+                    break
+
             else:
                 print(f"Congratulations: {game_over}!")
                 break
+
 
 def draw_grid(grid_size):
     """ Function to draw the grid.\n
@@ -98,15 +115,15 @@ def draw_grid(grid_size):
             # If the current column postion is the same as the grid size
             # Then the current postion is the final column
             if j == grid_size-1:
-                    # Don't add a '|' and end the line
-                    grid += f"{pos:2}\n"
+                # Don't add a '|' and end the line
+                grid += f"{pos:2}\n"
             else:
                 # Else add a '|' and continue the line
                 grid += f"{pos:2}|"
-            
+
             # Add the current position to the row list
             row.append(pos)
-            # Using the general number pattern formula to calculate
+            # Using a general number pattern formula, calculate and add
             #  the relative column position
             column.append((j+1)*grid_size-i)
             #  the relative first diagonal position
@@ -143,6 +160,7 @@ def draw_grid(grid_size):
     # Return the string containing the grid and the win_condition list
     return grid, win_condition
 
+
 def turn(player, grid, position):
     """ Takes the given position and changes it to the relevant symbol.\n
     Parameters:
@@ -157,7 +175,7 @@ def turn(player, grid, position):
     # If the given position is not in the grid string
     # This means that the chosen block has already been played
     try:
-        # Get the position of the block number in the grid string 
+        # Get the position of the block number in the grid string
         grid_pos = grid.index(str(position))
 
         # If it's player 1's turn
@@ -169,17 +187,15 @@ def turn(player, grid, position):
             # Else set the symbol to an "O"
             symbol = "O"
             player2.append(position)
-            
+
         # If the given position is more than 1 digit
         if len(str(position)) > 1:
             # Add a whitespace before the symbol
             symbol = f" {symbol}"
-            # Increase the starting position of the substring after
-            #  replacing the number
+            # Increase the starting position of the substring after replacing the number
             after_pos = 2
         else:
-            # Set the starting position of the substring to 
-            #  immediately after the symbol
+            # Set the starting position of the substring to immediately after the symbol
             after_pos = 1
         # Change that number to the relevant symbol
         new_grid = f"{grid[0:grid_pos]}{symbol}{grid[grid_pos+after_pos:len(grid)]}"
@@ -190,15 +206,16 @@ def turn(player, grid, position):
         # Return "played" for error handling in the main function
         return "played"
 
+
 def winner(win_condition, grid_size):
-    """ Check if a row has been completed by a player. 
+    """ Check if a row, column or diagonal has been completed by a player. 
     """
-    # Iterate through the row list
+    # Iterate through the win_condition list
     for row in win_condition:
         # Number of winning positions for both players
         win_token1 = 0
         win_token2 = 0
-        # Iterate through each list in the row list
+        # Iterate through each list in the win_condition list
         for pos in row:
             # Check is the current number is in either player lists
             if pos in player1:
@@ -220,6 +237,7 @@ def winner(win_condition, grid_size):
         else:
             continue
     return False
+
 
 if __name__ == '__main__':
     main()
