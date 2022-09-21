@@ -41,6 +41,7 @@ def main():
         
         # Capture the output of the current turn
         current_play = turn(player, play_grid, block)
+
         # If there was an issue with the current turn
         # play would be False
         if current_play == "played":
@@ -54,6 +55,7 @@ def main():
 
             # Get the current game status
             game_over = winner(win_condition, grid_size)
+
             # Check if there is no winner
             # Continue the game
             if game_over == False:
@@ -82,8 +84,11 @@ def draw_grid(grid_size):
     pos = 1
     # Loop for the rows
     for i in range(grid_size):
-        # List to store all the postions in a row
+        # List to store all the postions for each row
         row = []
+        # List to store all the postions for each column
+        column = []
+
         # Loop for the columns
         for j in range(grid_size):
             # If the current column postion is the same as the grid size
@@ -97,10 +102,18 @@ def draw_grid(grid_size):
             
             # Add the current position to the row list
             row.append(pos)
+            # Add the position tp the row list
+            # Using the general number pattern formula to calculate
+            #  the relative column position
+            column.append((j+1)*grid_size-i)
+
             # Increase the current block postion
             pos += 1
         # Add the row list to the win_condition list
         win_condition.append(row)
+        # Add the column list to the win_condition list
+        win_condition.append(column)
+
         # After the row of blocks is completed
         # Create a row to vertially separate the blocks
         # If the current row postion is the less than the grid size
@@ -161,6 +174,7 @@ def turn(player, grid, position):
         new_grid = f"{grid[0:grid_pos]}{symbol}{grid[grid_pos+after_pos:len(grid)]}"
         # Return the new grid string
         return new_grid
+
     except (ValueError):
         # Return "played" for error handling in the main function
         return "played"
@@ -183,10 +197,15 @@ def winner(win_condition, grid_size):
                 # If so increase the number of winning tokens
                 win_token2 += 1
 
+        # If player 1 has enough winning tokens
         if win_token1 >= grid_size:
+            # Make player 1 the winner
             return "Player 1"
+        # Else if player 2 has enough winning tokens
         elif win_token2 >= grid_size:
+            # Make player 2 the winner
             return "Player 2"
+        # Else there is no winner
         else:
             continue
     return False
