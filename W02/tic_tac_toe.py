@@ -88,6 +88,10 @@ def draw_grid(grid_size):
         row = []
         # List to store all the postions for each column
         column = []
+        # List to store all the postions for the first diagonal
+        diag1 = []
+        # List to store all the postions for the second diagonal
+        diag2 = []
 
         # Loop for the columns
         for j in range(grid_size):
@@ -102,10 +106,13 @@ def draw_grid(grid_size):
             
             # Add the current position to the row list
             row.append(pos)
-            # Add the position tp the row list
             # Using the general number pattern formula to calculate
             #  the relative column position
             column.append((j+1)*grid_size-i)
+            #  the relative first diagonal position
+            diag1.append((j+1)*(grid_size+1)-3)
+            #  the relative second diagonal position
+            diag2.append((j+1)*(grid_size-1)+1)
 
             # Increase the current block postion
             pos += 1
@@ -128,6 +135,10 @@ def draw_grid(grid_size):
                 else:
                     # Else add a '+' and continue the line
                     grid += "--+"
+    # Add the diag1 list to the win_condition list
+    win_condition.append(diag1)
+    # Add the diag2 list to the win_condition list
+    win_condition.append(diag2)
 
     # Return the string containing the grid and the win_condition list
     return grid, win_condition
