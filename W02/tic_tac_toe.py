@@ -168,19 +168,24 @@ def turn(player, grid, position):
 def winner(win_condition, grid_size):
     """ Check if a row has been completed by a player. 
     """
+    # Iterate through the row list
     for row in win_condition:
         # Number of winning positions for both players
-        win_pos1 = 0
-        win_pos2 = 0
+        win_token1 = 0
+        win_token2 = 0
+        # Iterate through each list in the row list
         for pos in row:
+            # Check is the current number is in either player lists
             if pos in player1:
-                win_pos1 += 1
-            if pos in player2:
-                win_pos2 += 1
+                # If so increase the number of winning tokens
+                win_token1 += 1
+            elif pos in player2:
+                # If so increase the number of winning tokens
+                win_token2 += 1
 
-        if win_pos1 >= grid_size:
+        if win_token1 >= grid_size:
             return "Player 1"
-        elif win_pos2 >= grid_size:
+        elif win_token2 >= grid_size:
             return "Player 2"
         else:
             continue
