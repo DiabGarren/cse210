@@ -127,7 +127,7 @@ def draw_grid(grid_size):
             #  the relative column position
             column.append((j+1)*grid_size-i)
             #  the relative first diagonal position
-            diag1.append((j+1)*(grid_size+1)-3)
+            diag1.append((j+1)*(grid_size+1)-grid_size)
             #  the relative second diagonal position
             diag2.append((j+1)*(grid_size-1)+1)
 
